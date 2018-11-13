@@ -10,7 +10,7 @@ A Python script to call a REST API and perform a card payment.
 Open a console and run the following commands to get going:
 * `git clone https://github.com/gianninasd/python-demo`
 * `cd python-demo`
-* `python card.py`
+* `python cardMain.py`
 
 You will see processing output on your console ...
 
