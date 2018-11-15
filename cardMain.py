@@ -1,13 +1,10 @@
 import requests
 import json
 import uuid
+from config import config
 
 # config
-accountId = '1001289630'
-cardUrl = 'https://api.test.paysafe.com/cardpayments/v1/accounts/' + accountId + '/auths'
-
-apiUser = 'test_assl1'
-apiPass = 'B-qa2-0-5be8832c-0-302c02146cd8d52ddcca8ee8ce57845505ce80cfcab23c6202140fb0300b0bf9a8cc63fc0b7d58e2c0c1b6724130'
+cardUrl = config['url'] + config['accountId'] + '/auths'
 headers = {'content-type': 'application/json'}
 
 cardReq = {
@@ -27,10 +24,15 @@ cardReq = {
 
 # send the request
 print('Sending: ' + json.dumps(cardReq))
-resp = requests.post(cardUrl, headers=headers, auth=(apiUser, apiPass), data=json.dumps(cardReq)) 
+resp = requests.post(cardUrl, headers=headers, auth=(config['apiUser'], config['apiPass']), data=json.dumps(cardReq)) 
 
 # process response
 print('Status: ' + str(resp.status_code) )
 
 if resp.status_code == 200:
-  print('response body: ' + str(resp.json()) )
+  #print('response body: ' + str(resp.json()) )
+  print('id: ' + str(resp.json()['id']) )
+  print('status: ' + str(resp.json()['status']) )
+  print('authCode: ' + str(resp.json()['authCode']) )
+  print('avsResponse: ' + str(resp.json()['avsResponse']) )
+  print('cvvVerification: ' + str(resp.json()['cvvVerification']) )
