@@ -1,6 +1,7 @@
 .vscode
 
 # generated folders
-_pycache_
+__pycache__
 
 # generated files
+*.pyc

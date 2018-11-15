@@ -1,3 +1,6 @@
+# @author Dimitrios Gianninas
+# Sample Python script for calling an external REST API
+
 import requests
 import json
 import uuid
