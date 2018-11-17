@@ -12,8 +12,9 @@ Open a console and run the following commands to get going:
 * `cd python-demo`
 * `python cardMain.py`
 
-You will see processing output on your console ...
+You will see processing output on your console
 
 ## References
+* Docs: https://www.python.org/doc/
 * Tutorial: https://www.w3schools.com/python/default.asp
 * Requests: http://docs.python-requests.org/en/master/
