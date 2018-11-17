@@ -3,8 +3,12 @@
 from CardClient import CardClient
 from CardRequest import CardRequest
 from config import config
+import platform
 
 requestCnt = 0
+
+print('Python File Processor running on ' + str(platform.system()) + ' ' + str(platform.release()))
+print('-------------------------------')
 
 # create client instance with some config
 client = CardClient(config['url'], config['apiUser'], config['apiPass'])

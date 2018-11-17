@@ -42,15 +42,12 @@ class CardClient:
     resp = requests.post(url, headers=headers, auth=(self.apiUser, self.apiPass), data=json.dumps(cardReq))
 
     # process response
-    #print('response body: ' + str(resp.json()) )
-    print('Status: ' + str(resp.status_code) )
-
     if resp.status_code == 200:
       obj = resp.json()
       print('--- SUCCESSFUL id: ' + str(obj['id']) + ' status: ' + str(obj['status']) + ' authCode: ' + str(obj['authCode']))
     elif resp.status_code >= 400 or resp.status_code < 500:
       errorObj = resp.json()['error']
-      print('--- BAD REQUEST Error code: ' + errorObj['code'] + ' with message: ' + errorObj['message'])
+      print('--- BAD REQUEST (' + str(resp.status_code) + ') Error code: ' + errorObj['code'] + ' with message: ' + errorObj['message'])
       #print('Details: ' + str(errorObj['details']))
     elif resp.status_code == 500:
       print('--- OOPS, SERVER ERROR! ---')
