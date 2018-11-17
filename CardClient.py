@@ -1,8 +1,8 @@
 import json
 import uuid
 import requests
+from CardRequest import CardRequest
 
-# @author Dimitrios Gianninas
 # Client class used to call an external REST API for transaction processing
 class CardClient:
   cardUrl = ''
@@ -16,23 +16,23 @@ class CardClient:
     self.apiPass = apiPass
 
   # sends a purchase request to a remote REST API
-  def purchase(self, accountId):
+  def purchase(self, accountId, cardRequest):
     url = self.cardUrl + accountId + '/auths'
     headers = {'content-type': 'application/json'}
 
     cardReq = {
-      "merchantRefNum": uuid.uuid1().hex,
-      "amount": 1500,
+      "merchantRefNum": cardRequest.ref,
+      "amount": cardRequest.amount,
       "settleWithAuth": True,
       "card": {
-        "cardNum": "4111111111111111",
+        "cardNum": cardRequest.cardNbr,
         "cardExpiry": {
-          "month": "10",
-          "year": "2020"
+          "month": cardRequest.cardExpMth,
+          "year": cardRequest.cardExpYear
         }
       },
       "billingDetails": {
-        "zip": "H8P1K1"
+        "zip": cardRequest.zipCode
       }
     }
 
@@ -42,20 +42,15 @@ class CardClient:
     resp = requests.post(url, headers=headers, auth=(self.apiUser, self.apiPass), data=json.dumps(cardReq))
 
     # process response
+    #print('response body: ' + str(resp.json()) )
     print('Status: ' + str(resp.status_code) )
 
     if resp.status_code == 200:
-      #print('response body: ' + str(resp.json()) )
-      print('--- SUCCESSFUL ---')
-      print('id: ' + str(resp.json()['id']) )
-      print('status: ' + str(resp.json()['status']) )
-      print('authCode: ' + str(resp.json()['authCode']) )
-      print('avsResponse: ' + str(resp.json()['avsResponse']) )
-      print('cvvVerification: ' + str(resp.json()['cvvVerification']) )
-    elif resp.status_code == 400:
+      obj = resp.json()
+      print('--- SUCCESSFUL id: ' + str(obj['id']) + ' status: ' + str(obj['status']) + ' authCode: ' + str(obj['authCode']))
+    elif resp.status_code >= 400 or resp.status_code < 500:
       errorObj = resp.json()['error']
-      print('--- BAD REQUEST ---')
-      print('Failed with error code: ' + errorObj['code'] + ' with message: ' + errorObj['message'])
-      print('Details: ' + str(errorObj['details']))
+      print('--- BAD REQUEST Error code: ' + errorObj['code'] + ' with message: ' + errorObj['message'])
+      #print('Details: ' + str(errorObj['details']))
     elif resp.status_code == 500:
       print('--- OOPS, SERVER ERROR! ---')
