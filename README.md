@@ -1,6 +1,6 @@
 Python-demo
 ================
-A Python script to call a REST API and perform a card payment.
+A Python script to call a REST API and perform a card payment using pool threading for parallel processing.
 
 ## Pre-requisites
 * Install Python 3.7.1
