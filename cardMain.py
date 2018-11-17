@@ -4,6 +4,8 @@ from CardClient import CardClient
 from CardRequest import CardRequest
 from config import config
 
+requestCnt = 0
+
 # create client instance with some config
 client = CardClient(config['url'], config['apiUser'], config['apiPass'])
 
@@ -18,3 +20,6 @@ for line in srcFile:
   # make purchase request
   client.purchase(config['accountId'], lineReq)
   print() # empty line
+  requestCnt = requestCnt + 1
+
+print('Processing complete for ' + str(requestCnt) + ' record(s)')
