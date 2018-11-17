@@ -38,20 +38,21 @@ class CardClient:
     }
 
     # send the request
-    #print('Sending: ' + json.dumps(cardReq))
     dt = datetime.datetime.now()
-    print(dt.strftime("%x %X:%f") + ' Sending reference ' + cardReq['merchantRefNum'] + ' with amount ' + str(cardReq['amount']))
+    dtAsStr = dt.strftime("%x %X:%f")
+    print(dtAsStr + ' Sending reference ' + cardReq['merchantRefNum'] + ' with amount ' + str(cardReq['amount']))
     resp = requests.post(url, headers=headers, auth=(self.apiUser, self.apiPass), data=json.dumps(cardReq))
 
     # process response
     dt = datetime.datetime.now()
+    dtAsStr = dt.strftime("%x %X:%f")
 
     if resp.status_code == 200:
       obj = resp.json()
-      print(dt.strftime("%x %X:%f") + ' ' + cardReq['merchantRefNum'] + ' --- SUCCESSFUL id: ' + str(obj['id']) + ' status: ' + str(obj['status']) + ' authCode: ' + str(obj['authCode']))
+      print(dtAsStr + ' ' + cardReq['merchantRefNum'] + ' --- SUCCESSFUL id: ' + str(obj['id']) + ' status: ' + str(obj['status']) + ' authCode: ' + str(obj['authCode']))
     elif resp.status_code >= 400 or resp.status_code < 500:
       errorObj = resp.json()['error']
-      print(dt.strftime("%x %X:%f") + ' ' + cardReq['merchantRefNum'] + ' --- FAILED (' + str(resp.status_code) + ') Error code: ' + errorObj['code'] + ' with message: ' + errorObj['message'])
+      print(dtAsStr + ' ' + cardReq['merchantRefNum'] + ' --- FAILED (' + str(resp.status_code) + ') Error code: ' + errorObj['code'] + ' - ' + errorObj['message'])
       #print('Details: ' + str(errorObj['details']))
     elif resp.status_code == 500:
-      print(dt.strftime("%x %X:%f") + ' ' + cardReq['merchantRefNum'] + ' --- OOPS, SERVER ERROR! ---')
+      print(dtAsStr + ' ' + cardReq['merchantRefNum'] + ' --- OOPS, SERVER ERROR! ---')
