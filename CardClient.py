@@ -1,8 +1,7 @@
 import json
-import uuid
 import requests
-import datetime
 from CardRequest import CardRequest
+from CardResponse import CardResponse
 
 # Client class used to call an external REST API for transaction processing
 class CardClient:
@@ -38,27 +37,20 @@ class CardClient:
     }
 
     # send the request
-    dt = datetime.datetime.now()
-    dtAsStr = dt.strftime("%x %X:%f")
-    print(dtAsStr + ' Sending reference ' + cardReq['merchantRefNum'] + ' with amount ' + str(cardReq['amount']))
     resp = requests.post(url, headers=headers, auth=(self.apiUser, self.apiPass), data=json.dumps(cardReq))
 
     # process response
-    dt = datetime.datetime.now()
-    dtAsStr = dt.strftime("%x %X:%f")
-    result = ''
-
     if resp.status_code == 200:
       obj = resp.json()
-      print(dtAsStr + ' ' + cardReq['merchantRefNum'] + ' --- SUCCESSFUL id: ' + str(obj['id']) + ' status: ' + str(obj['status']) + ' authCode: ' + str(obj['authCode']))
-      result = 'SUCCESS'
+      result = CardResponse('SUCCESS', cardRequest.ref)
+      result.txnId = str(obj['id'])
     elif resp.status_code >= 400 or resp.status_code < 500:
       errorObj = resp.json()['error']
-      print(dtAsStr + ' ' + cardReq['merchantRefNum'] + ' --- FAILED (' + str(resp.status_code) + ') Error code: ' + errorObj['code'] + ' - ' + errorObj['message'])
       #print('Details: ' + str(errorObj['details']))
-      result = 'FAILED'
+      result = CardResponse('FAILED', cardRequest.ref)
+      result.errorCode = errorObj['code']
+      result.message = errorObj['message']
     elif resp.status_code == 500:
-      print(dtAsStr + ' ' + cardReq['merchantRefNum'] + ' --- OOPS, SERVER ERROR! ---')
-      result = 'ERROR'
+      result = CardResponse('ERROR', cardRequest.ref)
 
     return result

@@ -7,6 +7,7 @@ from config import config
 import platform
 import concurrent.futures
 import uuid
+import datetime
 
 requestCnt = 0
 successCnt = 0
@@ -26,8 +27,20 @@ def processReq(line):
   lineReq = CardRequest()
   lineReq.parse(line)
   lineReq.ref = uuid.uuid1().hex
+
+  dt = datetime.datetime.now()
+  dtAsStr = dt.strftime("%x %X:%f")
+  print(dtAsStr + ' Sending reference ' + lineReq.ref + ' with amount ' + lineReq.amount)
+
   return client.purchase(config['accountId'], lineReq)
 
+# function for processing the record response
+def processRes(result):
+  dt = datetime.datetime.now()
+  dtAsStr = dt.strftime("%x %X:%f")
+  print(dtAsStr + ' ' + result.toString())
+
+# start thread pool with max threads
 ex = concurrent.futures.ThreadPoolExecutor(max_workers=5)
 allFutures = []
 
@@ -38,11 +51,12 @@ for line in srcFile:
 
 # loop thru each completed thread and handle result
 for f in concurrent.futures.as_completed(allFutures):
-  if f.result() == 'SUCCESS':
+  if f.result().status == 'SUCCESS':
     successCnt += 1
-  elif f.result() == 'FAILED':
+  elif f.result().status == 'FAILED':
     failedCnt += 1
-  
+
+  processRes(f.result())
   requestCnt += 1
 
 print('-------------------------------')
