@@ -46,13 +46,19 @@ class CardClient:
     # process response
     dt = datetime.datetime.now()
     dtAsStr = dt.strftime("%x %X:%f")
+    result = ''
 
     if resp.status_code == 200:
       obj = resp.json()
       print(dtAsStr + ' ' + cardReq['merchantRefNum'] + ' --- SUCCESSFUL id: ' + str(obj['id']) + ' status: ' + str(obj['status']) + ' authCode: ' + str(obj['authCode']))
+      result = 'SUCCESS'
     elif resp.status_code >= 400 or resp.status_code < 500:
       errorObj = resp.json()['error']
       print(dtAsStr + ' ' + cardReq['merchantRefNum'] + ' --- FAILED (' + str(resp.status_code) + ') Error code: ' + errorObj['code'] + ' - ' + errorObj['message'])
       #print('Details: ' + str(errorObj['details']))
+      result = 'FAILED'
     elif resp.status_code == 500:
       print(dtAsStr + ' ' + cardReq['merchantRefNum'] + ' --- OOPS, SERVER ERROR! ---')
+      result = 'ERROR'
+
+    return result

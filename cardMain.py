@@ -9,6 +9,8 @@ import concurrent.futures
 import uuid
 
 requestCnt = 0
+successCnt = 0
+failedCnt = 0
 
 print('Python File Processor running on ' + str(platform.system()) + ' ' + str(platform.release()))
 print('-------------------------------')
@@ -24,13 +26,24 @@ def processReq(line):
   lineReq = CardRequest()
   lineReq.parse(line)
   lineReq.ref = uuid.uuid1().hex
-  client.purchase(config['accountId'], lineReq)
+  return client.purchase(config['accountId'], lineReq)
 
 ex = concurrent.futures.ThreadPoolExecutor(max_workers=5)
+allFutures = []
 
 # loop thru each record and submit to the pool for execution
 for line in srcFile:
-  ex.submit(processReq, line)
-  requestCnt = requestCnt + 1
+  future = ex.submit(processReq, line)
+  allFutures.append(future)
 
-print('Submitted ' + str(requestCnt) + ' record(s) for processing')
+# loop thru each completed thread and handle result
+for f in concurrent.futures.as_completed(allFutures):
+  if f.result() == 'SUCCESS':
+    successCnt += 1
+  elif f.result() == 'FAILED':
+    failedCnt += 1
+  
+  requestCnt += 1
+
+print('-------------------------------')
+print('Completed processing ' + str(requestCnt) + ' record(s) - ' + str(successCnt) + ' succeeded, ' + str(failedCnt) + ' failed')
