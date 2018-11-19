@@ -1,18 +1,20 @@
 # Holds data for card response
 class CardResponse:
+  guid = ''
+  decision = ''
   ref = ''
-  txnId = ''
+  txnId = ''  
   status = ''
   errorCode = ''
   message = ''
 
   # constructor
-  def __init__(self, status, ref):
-    self.status = status
-    self.ref = ref
+  def __init__(self, decision, guid):
+    self.decision = decision
+    self.guid = guid
 
   def toString(self):
-    if self.status == 'SUCCESS':
-      return self.ref + ' SUCCESS id: ' + self.txnId
+    if self.decision == 'SUCCESS':
+      return self.guid + ' SUCCESS id: ' + self.txnId
     else:
-      return self.ref + ' FAILED Error code: ' + self.errorCode + ' - ' + self.message
+      return self.guid + ' FAILED id: ' + self.txnId + ' Error code: ' + self.errorCode + ' - ' + self.message

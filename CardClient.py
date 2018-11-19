@@ -44,10 +44,14 @@ class CardClient:
       obj = resp.json()
       result = CardResponse('SUCCESS', cardRequest.ref)
       result.txnId = str(obj['id'])
+      result.ref = str(obj['merchantRefNum'])
+      result.status = str(obj['status'])
     elif resp.status_code >= 400 or resp.status_code < 500:
-      errorObj = resp.json()['error']
       #print('Details: ' + str(errorObj['details']))
       result = CardResponse('FAILED', cardRequest.ref)
+      result.txnId = str(resp.json()['id'])
+      result.ref = str(resp.json()['merchantRefNum'])
+      errorObj = resp.json()['error']
       result.errorCode = errorObj['code']
       result.message = errorObj['message']
     elif resp.status_code == 500:

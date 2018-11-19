@@ -1,5 +1,6 @@
 # Holds data for card request
 class CardRequest:
+  guid = ''
   ref = ''
   amount = ''
   cardNbr = ''

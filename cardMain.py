@@ -26,7 +26,8 @@ srcFile = open('sample.csv','rt')
 def processReq(line):
   lineReq = CardRequest()
   lineReq.parse(line)
-  lineReq.ref = uuid.uuid1().hex
+  lineReq.guid = uuid.uuid1().hex
+  lineReq.ref = lineReq.guid # we do this to make sure records works due to test data
 
   dt = datetime.datetime.now()
   dtAsStr = dt.strftime("%x %X:%f")
@@ -51,9 +52,9 @@ for line in srcFile:
 
 # loop thru each completed thread and handle result
 for f in concurrent.futures.as_completed(allFutures):
-  if f.result().status == 'SUCCESS':
+  if f.result().decision == 'SUCCESS':
     successCnt += 1
-  elif f.result().status == 'FAILED':
+  elif f.result().decision == 'FAILED':
     failedCnt += 1
 
   processRes(f.result())
