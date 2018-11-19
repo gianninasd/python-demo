@@ -41,9 +41,10 @@ def processRes(result):
   dtAsStr = dt.strftime("%x %X:%f")
   print(dtAsStr + ' ' + result.toString())
 
-# start thread pool with max threads
+# start thread pool with maximum number of threads
 ex = concurrent.futures.ThreadPoolExecutor(max_workers=5)
 allFutures = []
+startTime = datetime.datetime.now()
 
 # loop thru each record and submit to the pool for execution
 for line in srcFile:
@@ -60,5 +61,7 @@ for f in concurrent.futures.as_completed(allFutures):
   processRes(f.result())
   requestCnt += 1
 
+endTime = datetime.datetime.now()
 print('-------------------------------')
-print('Completed processing ' + str(requestCnt) + ' record(s) - ' + str(successCnt) + ' succeeded, ' + str(failedCnt) + ' failed')
+print('Processed ' + str(requestCnt) + ' record(s) in ' + str(endTime - startTime) \
+  + ' - ' + str(successCnt) + ' succeeded, ' + str(failedCnt) + ' failed')
