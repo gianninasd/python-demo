@@ -19,9 +19,6 @@ print('-------------------------------')
 # create client instance with some config
 client = CardClient(config['url'], config['apiUser'], config['apiPass'])
 
-# open file and loop for each line
-srcFile = open('sample.csv','rt')
-
 # function for processing a single record
 def processReq(line):
   lineReq = CardRequest()
@@ -41,27 +38,37 @@ def processRes(result):
   dtAsStr = dt.strftime("%x %X:%f")
   print(dtAsStr + ' ' + result.toString())
 
-# start thread pool with maximum number of threads
-ex = concurrent.futures.ThreadPoolExecutor(max_workers=5)
-allFutures = []
-startTime = datetime.datetime.now()
+try:
+  startTime = datetime.datetime.now()
 
-# loop thru each record and submit to the pool for execution
-for line in srcFile:
-  future = ex.submit(processReq, line)
-  allFutures.append(future)
+  # open file and loop for each line
+  srcFile = open('sample.csv','rt')
 
-# loop thru each completed thread and handle result
-for f in concurrent.futures.as_completed(allFutures):
-  if f.result().decision == 'SUCCESS':
-    successCnt += 1
-  elif f.result().decision == 'FAILED':
-    failedCnt += 1
+  # start thread pool with maximum number of threads
+  with concurrent.futures.ThreadPoolExecutor(max_workers=5) as ex:
+    allFutures = []
 
-  processRes(f.result())
-  requestCnt += 1
+    # loop thru each record and submit to the pool for execution
+    for line in srcFile:
+      future = ex.submit(processReq, line)
+      allFutures.append(future)
 
-endTime = datetime.datetime.now()
-print('-------------------------------')
-print('Processed ' + str(requestCnt) + ' record(s) in ' + str(endTime - startTime) \
-  + ' - ' + str(successCnt) + ' succeeded, ' + str(failedCnt) + ' failed')
+    # loop thru each completed thread and handle result
+    for f in concurrent.futures.as_completed(allFutures):
+      if f.result().decision == 'SUCCESS':
+        successCnt += 1
+      elif f.result().decision == 'FAILED':
+        failedCnt += 1
+
+      processRes(f.result())
+      requestCnt += 1
+
+  endTime = datetime.datetime.now()
+  print('-------------------------------')
+  print('Processed ' + str(requestCnt) + ' record(s) in ' + str(endTime - startTime) \
+    + ' - ' + str(successCnt) + ' succeeded, ' + str(failedCnt) + ' failed')
+
+except FileNotFoundError as e:
+  print('File could not be found')
+except Exception as e:
+  print('Unknown error occured')
