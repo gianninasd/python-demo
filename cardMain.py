@@ -69,6 +69,6 @@ try:
     + ' - ' + str(successCnt) + ' succeeded, ' + str(failedCnt) + ' failed')
 
 except FileNotFoundError as e:
-  print('File could not be found')
+  print('File not found')
 except Exception as e:
-  print('Unknown error occured')
+  print('Unknown error occured: ' + str(e))
