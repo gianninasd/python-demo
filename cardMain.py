@@ -8,6 +8,9 @@ import platform
 import concurrent.futures
 import uuid
 import datetime
+import sys
+
+print(sys.path)
 
 requestCnt = 0
 successCnt = 0
