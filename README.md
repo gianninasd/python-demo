@@ -14,6 +14,8 @@ Open a console and run the following commands to get going:
 
 You will see processing output on your console
 
+To execute all unit tests from the root folder, from the console run: `python -m unittest discover -s test`
+
 ## References
 * Docs: https://www.python.org/doc/
 * Tutorials: 

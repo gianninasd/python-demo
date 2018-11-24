@@ -15,7 +15,3 @@ class TestCardResponse(unittest.TestCase):
     res.errorCode = '1007'
     res.message = 'insufficient funds'
     self.assertEqual(res.toString(), 'guid1234 FAILED id: 0011 Error code: 1007 - insufficient funds')
-
-# run the tests
-if __name__ == '__main__':
-    unittest.main()
