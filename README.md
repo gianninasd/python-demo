@@ -16,6 +16,8 @@ You will see processing output on your console
 
 ## References
 * Docs: https://www.python.org/doc/
-* Tutorial: https://www.w3schools.com/python/default.asp
+* Tutorials: 
+  * https://realpython.com/
+  * https://www.w3schools.com/python/default.asp
 * Requests: http://docs.python-requests.org/en/master/
 * Futures: http://masnun.com/2016/03/29/python-a-quick-introduction-to-the-concurrent-futures-module.html
