@@ -9,13 +9,13 @@ import platform
 import concurrent.futures
 import uuid
 import datetime
+import sys
 
-requestCnt = 0
-successCnt = 0
-failedCnt = 0
-
-print('Python File Processor running on ' + str(platform.system()) + ' ' + str(platform.release()))
-print('-------------------------------')
+# validates that the command line has the neccesary arguments
+def validateCommandLine(args):
+  if len(args) != 2:
+    print('Missing or too many arguments, should be cardMain.py <filename>')
+    sys.exit(1)
 
 # create client instance with some config
 client = CardClient(config['url'], config['apiUser'], config['apiPass'])
@@ -39,11 +39,23 @@ def processRes(result):
   dtAsStr = dt.strftime("%x %X:%f")
   print(dtAsStr + ' ' + result.toString())
 
+print('Python File Processor running on ' + str(platform.system()) + ' ' + str(platform.release()))
+
+validateCommandLine(sys.argv)
+
+requestCnt = 0
+successCnt = 0
+failedCnt = 0
+fileName = sys.argv[1]
+
+print('Processing file [' + fileName + ']')
+print('-------------------------------')
+
 try:
   startTime = datetime.datetime.now()
 
   # open file and loop for each line
-  srcFile = open('sample.csv','rt')
+  srcFile = open(fileName,'rt')
 
   # start thread pool with maximum number of threads
   with concurrent.futures.ThreadPoolExecutor(max_workers=5) as ex:
