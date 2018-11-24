@@ -1,7 +1,7 @@
 import json
 import requests
-from CardRequest import CardRequest
-from CardResponse import CardResponse
+from dg.CardRequest import CardRequest
+from dg.CardResponse import CardResponse
 
 # Client class used to call an external REST API for transaction processing
 class CardClient:

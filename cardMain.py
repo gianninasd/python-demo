@@ -1,16 +1,14 @@
 # Sample Python script for calling an external REST API
 
 from CardClient import CardClient
-from CardRequest import CardRequest
+from dg.CardRequest import CardRequest
+from dg.CardResponse import CardResponse
 from config import config
 
 import platform
 import concurrent.futures
 import uuid
 import datetime
-import sys
-
-print(sys.path)
 
 requestCnt = 0
 successCnt = 0

@@ -1,4 +1,4 @@
-from CardResponse import CardResponse
+from dg.CardResponse import CardResponse
 
 import unittest
 
