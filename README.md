@@ -10,7 +10,7 @@ A Python program that reads a CSV file and for each record, calls a REST API tha
 Open a console and run the following commands to get going:
 * `git clone https://github.com/gianninasd/python-demo`
 * `cd python-demo`
-* `python fileProc.py`
+* `python fileProc.py sample.csv`
 
 You will see processing output on your console and in a file called "fileProc.log"
 
