@@ -40,7 +40,7 @@ def processReq(line):
 def processRes(result):
   logging.info(result.toString())
 
-logging.info('Python File Processor running on ' + str(platform.system()) + ' ' + str(platform.release()))
+logging.info('Python ' + platform.python_version() + ' File Processor running on ' + str(platform.system()) + ' ' + str(platform.release()))
 
 validateCommandLine(sys.argv)
 
