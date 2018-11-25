@@ -1,4 +1,4 @@
-# Sample Python script for calling an external REST API
+# Sample Python script for reading a file and calling an external REST API
 
 from CardClient import CardClient
 from dg.CardRequest import CardRequest
@@ -14,7 +14,7 @@ import sys
 # validates that the command line has the neccesary arguments
 def validateCommandLine(args):
   if len(args) != 2:
-    print('Missing or too many arguments, should be cardMain.py <filename>')
+    print('Missing or too many arguments, should be fileProc.py <filename>')
     sys.exit(1)
 
 # create client instance with some config
@@ -58,22 +58,22 @@ try:
   srcFile = open(fileName,'rt')
 
   # start thread pool with maximum number of threads
-  with concurrent.futures.ThreadPoolExecutor(max_workers=5) as ex:
+  with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
     allFutures = []
 
     # loop thru each record and submit to the pool for execution
     for line in srcFile:
-      future = ex.submit(processReq, line)
+      future = executor.submit(processReq, line)
       allFutures.append(future)
 
     # loop thru each completed thread and handle result
-    for f in concurrent.futures.as_completed(allFutures):
-      if f.result().decision == 'SUCCESS':
+    for future in concurrent.futures.as_completed(allFutures):
+      if future.result().decision == 'SUCCESS':
         successCnt += 1
-      elif f.result().decision == 'FAILED':
+      elif future.result().decision == 'FAILED':
         failedCnt += 1
 
-      processRes(f.result())
+      processRes(future.result())
       requestCnt += 1
 
   endTime = datetime.datetime.now()
@@ -81,7 +81,7 @@ try:
   print('Processed ' + str(requestCnt) + ' record(s) in ' + str(endTime - startTime) \
     + ' - ' + str(successCnt) + ' succeeded, ' + str(failedCnt) + ' failed')
 
-except FileNotFoundError as e:
+except FileNotFoundError as ex:
   print('File not found')
-except Exception as e:
-  print('Unknown error occured: ' + str(e))
+except Exception as ex:
+  print('Unknown error occured: ' + str(ex))

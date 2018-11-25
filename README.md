@@ -1,6 +1,6 @@
 Python-demo
 ================
-A Python script to call a REST API and perform a card payment using pool threading for parallel processing.
+A Python program that reads a CSV file and for each record, calls a REST API that performs a card payment using pool threading for parallel processing.
 
 ## Pre-requisites
 * Install Python 3.7.1
@@ -10,7 +10,7 @@ A Python script to call a REST API and perform a card payment using pool threadi
 Open a console and run the following commands to get going:
 * `git clone https://github.com/gianninasd/python-demo`
 * `cd python-demo`
-* `python cardMain.py`
+* `python fileProc.py`
 
 You will see processing output on your console
 
