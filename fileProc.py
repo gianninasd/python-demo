@@ -10,11 +10,16 @@ import concurrent.futures
 import uuid
 import datetime
 import sys
+import logging
+import logging.config
+
+# setup application logging
+logging.config.fileConfig('logging.conf')
 
 # validates that the command line has the neccesary arguments
 def validateCommandLine(args):
   if len(args) != 2:
-    print('Missing or too many arguments, should be fileProc.py <filename>')
+    logging.warning('Missing or too many arguments, should be fileProc.py <filename>')
     sys.exit(1)
 
 # create client instance with some config
@@ -25,21 +30,17 @@ def processReq(line):
   lineReq = CardRequest()
   lineReq.parse(line)
   lineReq.guid = uuid.uuid1().hex
-  lineReq.ref = lineReq.guid # we do this to make sure records works due to test data
+  lineReq.ref = lineReq.guid # we do this to make sure records work due to test data
 
-  dt = datetime.datetime.now()
-  dtAsStr = dt.strftime("%x %X:%f")
-  print(dtAsStr + ' Sending reference ' + lineReq.ref + ' with amount ' + lineReq.amount)
+  logging.info('Sending reference ' + lineReq.ref + ' with amount ' + lineReq.amount)
 
   return client.purchase(config['accountId'], lineReq)
 
 # function for processing the record response
 def processRes(result):
-  dt = datetime.datetime.now()
-  dtAsStr = dt.strftime("%x %X:%f")
-  print(dtAsStr + ' ' + result.toString())
+  logging.info(result.toString())
 
-print('Python File Processor running on ' + str(platform.system()) + ' ' + str(platform.release()))
+logging.info('Python File Processor running on ' + str(platform.system()) + ' ' + str(platform.release()))
 
 validateCommandLine(sys.argv)
 
@@ -48,8 +49,8 @@ successCnt = 0
 failedCnt = 0
 fileName = sys.argv[1]
 
-print('Processing file [' + fileName + ']')
-print('-------------------------------')
+logging.info('Processing file [' + fileName + ']')
+logging.info('-------------------------------')
 
 try:
   startTime = datetime.datetime.now()
@@ -77,11 +78,11 @@ try:
       requestCnt += 1
 
   endTime = datetime.datetime.now()
-  print('-------------------------------')
-  print('Processed ' + str(requestCnt) + ' record(s) in ' + str(endTime - startTime) \
+  logging.info('-------------------------------')
+  logging.info('Processed ' + str(requestCnt) + ' record(s) in ' + str(endTime - startTime) \
     + ' - ' + str(successCnt) + ' succeeded, ' + str(failedCnt) + ' failed')
 
 except FileNotFoundError as ex:
-  print('File not found')
+  logging.error('File [' + fileName + '] not found')
 except Exception as ex:
-  print('Unknown error occured: ' + str(ex))
+  logging.exception('Unknown error occured!?')
