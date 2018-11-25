@@ -29,7 +29,7 @@ client = CardClient(config['url'], config['apiUser'], config['apiPass'])
 def processReq(line):
   lineReq = CardRequest()
   lineReq.parse(line)
-  lineReq.guid = uuid.uuid1().hex
+  lineReq.guid = str(uuid.uuid1())
   lineReq.ref = lineReq.guid # we do this to make sure records work due to test data
 
   logging.info('Sending reference ' + lineReq.ref + ' with amount ' + lineReq.amount)
