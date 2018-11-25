@@ -12,7 +12,7 @@ Open a console and run the following commands to get going:
 * `cd python-demo`
 * `python fileProc.py`
 
-You will see processing output on your console
+You will see processing output on your console and in a file called "fileProc.log"
 
 To execute all unit tests from the root folder, from the console run: `python -m unittest discover -s test`
 
