@@ -31,6 +31,11 @@ class CardClient:
           "year": cardRequest.cardExpYear
         }
       },
+      "profile": {
+        "firstName": cardRequest.firstName,
+        "lastName": cardRequest.lastName,
+        "email": cardRequest.email,
+      },
       "billingDetails": {
         "zip": cardRequest.zipCode
       }
