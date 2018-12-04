@@ -3,6 +3,7 @@
 from CardClient import CardClient
 from dg.CardRequest import CardRequest
 from dg.CardResponse import CardResponse
+from dg.RecordDAO import RecordDAO
 from config import config
 
 import platform
@@ -24,6 +25,7 @@ def validateCommandLine(args):
 
 # create client instance with some config
 client = CardClient(config['url'], config['apiUser'], config['apiPass'])
+dao = RecordDAO()
 
 # function for processing a single record
 def processReq(line):
@@ -33,6 +35,7 @@ def processReq(line):
   lineReq.ref = lineReq.guid # we do this to make sure records work due to test data
 
   logging.info('Sending reference ' + lineReq.ref + ' with amount ' + lineReq.amount)
+  dao.create(lineReq)
 
   return client.purchase(config['accountId'], lineReq)
 

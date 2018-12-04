@@ -24,3 +24,11 @@ class CardRequest:
     self.lastName = str(tokens[6]).strip()
     self.email = str(tokens[7]).strip()
     self.zipCode = str(tokens[8]).strip()
+
+  def toString(self):
+    return 'ref=' + str(self.ref) + \
+      ',amount=' + str(self.amount) + \
+      ',firstName=' + str(self.firstName) + \
+      ',lastName=' + str(self.lastName) + \
+      ',email=' + str(self.email) + \
+      ',cardNbr=XXXX' + str(self.cardNbr)[12:]
