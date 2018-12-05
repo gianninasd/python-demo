@@ -23,10 +23,6 @@ def validateCommandLine(args):
     logging.warning('Missing or too many arguments, should be fileProc.py <filename>')
     sys.exit(1)
 
-# create client instance with some config
-client = CardClient(config['url'], config['apiUser'], config['apiPass'])
-dao = RecordDAO()
-
 # function for processing a single record
 def processReq(line):
   lineReq = CardRequest()
@@ -52,6 +48,10 @@ requestCnt = 0
 successCnt = 0
 failedCnt = 0
 fileName = sys.argv[1]
+
+# create client instance with some config
+client = CardClient(config['url'], config['apiUser'], config['apiPass'])
+dao = RecordDAO()
 
 logging.info('Processing file [' + fileName + ']')
 logging.info('-------------------------------')
