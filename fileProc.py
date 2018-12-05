@@ -42,6 +42,7 @@ def processReq(line):
 # function for processing the record response
 def processRes(result):
   logging.info(result.toString())
+  dao.update(result)
 
 logging.info('Python ' + platform.python_version() + ' File Processor running on ' + str(platform.system()) + ' ' + str(platform.release()))
 

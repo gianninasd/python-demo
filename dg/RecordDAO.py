@@ -8,6 +8,8 @@ class RecordDAO:
   # sql statement constants
   CREATE = 'insert into file_records (guid,status_cde,request_body,created_date,modification_date) ' \
     + 'values (%(guid)s,%(status)s,%(request)s,%(createdDate)s,%(modificationDate)s)'
+  UPDATE = 'update file_records set status_cde = %(status)s, response_body = %(response)s, modification_date = now() ' \
+    + 'where guid = %(guid)s'
 
   dbPool = None
 
@@ -41,6 +43,23 @@ class RecordDAO:
       cn = self.getConn()
       cursor = cn.cursor()
       cursor.execute(self.CREATE, data)
+      cn.commit()
+    finally:
+      cn.close()
+
+  # update an existing record
+  def update(self, rec):
+    currTime = datetime.datetime.now()
+    data = {
+      'guid': rec.guid,
+      'status': rec.decision,
+      'response': rec.toString()
+    }
+    
+    try:
+      cn = self.getConn()
+      cursor = cn.cursor()
+      cursor.execute(self.UPDATE, data)
       cn.commit()
     finally:
       cn.close()
