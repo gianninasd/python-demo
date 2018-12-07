@@ -22,4 +22,4 @@ class AbstractDAO:
       cursor.execute(sqlStmt, data)
       cn.commit()
     finally:
-      cn.close()
+      cn.close() # returns connection to the pool
