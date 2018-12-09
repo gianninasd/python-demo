@@ -7,6 +7,7 @@ class CardResponse:
   status = ''
   errorCode = ''
   message = ''
+  modificationDate = ''
 
   # constructor
   def __init__(self, decision, guid):

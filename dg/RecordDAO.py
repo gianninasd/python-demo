@@ -1,4 +1,5 @@
 from dg.AbstractDAO import AbstractDAO
+from dg.CardResponse import CardResponse
 from mysql.connector.pooling import MySQLConnectionPool
 
 # DAO to interac with file records
@@ -9,6 +10,8 @@ class RecordDAO(AbstractDAO):
     + 'values (%(guid)s,%(status)s,%(request)s,now(),now())'
   UPDATE = 'update file_records set status_cde = %(status)s, response_body = %(response)s, ' \
     + 'modification_date = now() where guid = %(guid)s'
+  LOAD_ALL = 'select record_id, guid, status_cde, modification_date from file_records ' \
+    + 'where created_date >= now() - interval 5 day order by modification_date asc'
 
   # create a new record entry
   def create(self, rec):
@@ -29,3 +32,24 @@ class RecordDAO(AbstractDAO):
     }
 
     self.execute(self.UPDATE, data)
+
+  # returns all the records created in the last day
+  def getAll(self):
+    try:
+      cn = self.getConn()
+      cursor = cn.cursor()
+      cursor.execute(self.LOAD_ALL)
+
+      rows = cursor.fetchall()
+      recs = []
+
+      for rec in rows:
+        fileRec = CardResponse('','')
+        fileRec.guid = rec[1]
+        fileRec.status = rec[2]
+        fileRec.modificationDate = rec[3]
+        recs.append(fileRec)
+
+      return recs
+    finally:
+      cn.close()
