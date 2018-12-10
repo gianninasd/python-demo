@@ -11,7 +11,7 @@ class RecordDAO(AbstractDAO):
   UPDATE = 'update file_records set status_cde = %(status)s, response_body = %(response)s, ' \
     + 'modification_date = now() where guid = %(guid)s'
   LOAD_ALL = 'select record_id, guid, status_cde, modification_date from file_records ' \
-    + 'where created_date >= now() - interval 5 day order by modification_date asc'
+    + 'where created_date >= now() - interval 1 day order by modification_date asc'
 
   # create a new record entry
   def create(self, rec):
