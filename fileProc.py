@@ -1,6 +1,6 @@
 # Sample Python script for reading a file and calling an external REST API
 
-from CardClient import CardClient
+from dg.CardClient import CardClient
 from dg.CardRequest import CardRequest
 from dg.CardResponse import CardResponse
 from dg.RecordDAO import RecordDAO

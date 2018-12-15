@@ -1,6 +1,6 @@
 # Python script calling an external REST API using concurrency running for a maximum X minutes
 
-from CardClient import CardClient
+from dg.CardClient import CardClient
 from dg.CardRequest import CardRequest
 from dg.CardResponse import CardResponse
 from config import config
