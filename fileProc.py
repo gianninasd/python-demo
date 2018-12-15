@@ -2,7 +2,6 @@
 
 from dg.CardClient import CardClient
 from dg.CardRequest import CardRequest
-from dg.CardResponse import CardResponse
 from dg.RecordDAO import RecordDAO
 from config import config
 
@@ -14,20 +13,20 @@ import sys
 import logging
 import logging.config
 
-# setup application logging
-logging.config.fileConfig('logging.conf')
+# define custom exception
+class InvalidArguments(Exception):
+  pass
 
 # validates that the command line has the neccesary arguments
 def validateCommandLine(args):
   if len(args) != 2:
-    logging.warning('Missing or too many arguments, should be fileProc.py <filename>')
-    sys.exit(1)
+    raise InvalidArguments()
 
 # function for processing a single record
 def processReq(line):
   lineReq = CardRequest()
   lineReq.parse(line)
-  lineReq.guid = str(uuid.uuid1())
+  lineReq.guid = str(uuid.uuid4())
   lineReq.ref = lineReq.guid # we do this to make sure records work due to test data
 
   logging.info('Sending reference ' + lineReq.ref + ' with amount ' + lineReq.amount)
@@ -40,9 +39,17 @@ def processRes(result):
   logging.info(result.toString())
   dao.update(result)
 
+# ------------- APPLICATION START -------------
+# setup application logging
+logging.config.fileConfig('logging.conf')
+
 logging.info('Python ' + platform.python_version() + ' File Processor running on ' + str(platform.system()) + ' ' + str(platform.release()))
 
-validateCommandLine(sys.argv)
+try:
+  validateCommandLine(sys.argv)
+except InvalidArguments as ex:
+  logging.warning('Missing or too many arguments, should be fileProc.py <filename>')
+  sys.exit(1)
 
 requestCnt = 0
 successCnt = 0
