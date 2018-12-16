@@ -4,7 +4,7 @@ import unittest
 
 class TestCardRequest(unittest.TestCase):
 
-  def test_parse(self):
+  def test_ToString(self):
     req = CardRequest()
     req.ref = 'ref1'
     req.amount = '1500'
