@@ -1,7 +1,8 @@
 # Sample Python script for reading a file and calling an external REST API
 
 from dg.CardClient import CardClient
-from dg.CardRequest import CardRequest
+from dg.LineParser import LineParser
+from dg.CardResponse import CardResponse
 from dg.RecordDAO import RecordDAO
 from config import config
 
@@ -24,15 +25,23 @@ def validateCommandLine(args):
 
 # function for processing a single record
 def processReq(line):
-  lineReq = CardRequest()
-  lineReq.parse(line)
-  lineReq.guid = str(uuid.uuid4())
-  lineReq.ref = lineReq.guid # we do this to make sure records work due to test data
+  guid = str(uuid.uuid4())
 
-  logging.info('Sending reference ' + lineReq.ref + ' with amount ' + lineReq.amount)
-  dao.create(lineReq)
+  try:
+    parser = LineParser()
+    lineReq = parser.parse(line)
+    lineReq.guid = guid
+    lineReq.ref = guid # we do this to make sure records work due to test data, not needed in PROD
 
-  return client.purchase(config['accountId'], lineReq)
+    logging.info('Sending reference ' + lineReq.ref + ' with amount ' + lineReq.amount)
+    dao.create(lineReq)
+
+    return client.purchase(config['accountId'], lineReq)
+  except Exception as ex:
+    logging.warning(guid + ' Line processing failed: ' + str(ex))
+    resp = CardResponse('ERROR', guid)
+    resp.message = str(ex)
+    return resp
 
 # function for processing the record response
 def processRes(result):
