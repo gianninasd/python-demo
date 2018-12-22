@@ -26,6 +26,7 @@ To execute all unit tests from the root folder, from the console run: `python -m
   * https://realpython.com/
   * https://www.w3schools.com/python/default.asp
   * https://pyformat.info/
+  * https://python-textbok.readthedocs.io/en/1.0/Introduction.html
 * Requests: http://docs.python-requests.org/en/master/
 * Futures: http://masnun.com/2016/03/29/python-a-quick-introduction-to-the-concurrent-futures-module.html
 * MySQL Connector: https://dev.mysql.com/doc/connector-python/en/

@@ -23,6 +23,16 @@ class FileService:
   def __init__(self, secretKey):
     self.secretKey = secretKey
 
+  # extracts only the filename without the extension
+  def extractFileName(self, fullFileName):
+    idx = fullFileName.index('.csv')
+    return fullFileName[:idx]
+
+  # generates an ack file in the folder specified
+  def createAck(self, path, fileName, responseCode, responseMessage):
+    with open(path + '/' + fileName + '.ack.csv', 'w') as ackFile:
+      ackFile.write('ACK,' + responseCode + ',' + responseMessage)
+
   # creates a file record in the DB
   # raises DupeFileException if file was previously uploaded in the last 24 hrs
   def create(self, fileName):
