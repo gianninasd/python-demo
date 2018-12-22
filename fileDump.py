@@ -6,4 +6,4 @@ dao = RecordDAO()
 recs = dao.getAll()
 
 for rec in recs:
-  print(rec.guid + ' last modified on ' + str(rec.modificationDate) + ' status is ' + rec.status)
+  print(str(rec.guid) + ' last modified on ' + str(rec.modificationDate) + ' status is ' + rec.status)

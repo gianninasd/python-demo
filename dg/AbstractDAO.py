@@ -1,4 +1,4 @@
-from dbConfig import dbConfig
+from config import dbConfig
 from mysql.connector.pooling import MySQLConnectionPool
 
 # base class for all DAO with re-usable methods

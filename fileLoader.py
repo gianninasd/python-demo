@@ -33,9 +33,6 @@ try:
 
         # open file and loop for each line
         with open(workingDir + '/' + fullFileName,'rt') as srcFile:
-          # TODO move files from incoming to outgoing??
-          # TODO look into folder every 2 mins indefinitly
-
           for line in srcFile:
             service.storeRecord(fileId, line)
             cnt += 1

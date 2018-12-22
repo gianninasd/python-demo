@@ -64,6 +64,7 @@ requestCnt = 0
 successCnt = 0
 failedCnt = 0
 fileName = sys.argv[1]
+maxThreads = config['maxThreads']
 
 # create client instance with some config
 client = CardClient(config['url'], config['apiUser'], config['apiPass'])
@@ -79,7 +80,7 @@ try:
   srcFile = open(fileName,'rt')
 
   # start thread pool with maximum number of threads
-  with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+  with concurrent.futures.ThreadPoolExecutor(max_workers=maxThreads) as executor:
     allFutures = []
 
     # loop thru each record and submit to the pool for execution
