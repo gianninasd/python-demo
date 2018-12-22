@@ -8,6 +8,10 @@ import hashlib
 class DupeFileException(Exception):
   pass
 
+# Exception thrown when the secret key is not an environment variable
+class SecretKeyNotFoundException(Exception):
+  pass
+
 # Service class for all file operations
 class FileService:
   secretKey = b''
@@ -22,7 +26,7 @@ class FileService:
   # creates a file record in the DB
   # raises DupeFileException if file was previously uploaded in the last 24 hrs
   def create(self, fileName):
-    fileHash = self.__calculateHash(fileName)
+    fileHash = self._calculateHash(fileName)
     cnt = self.fileDAO.countInLast24hrs(fileHash)
 
     fileId = self.fileDAO.create(fileName, fileHash)
@@ -41,7 +45,7 @@ class FileService:
     self.recordDAO.createInitial(fileId, token)
 
   # generates the hash value of the file contents
-  def __calculateHash(self, fileName):
+  def _calculateHash(self, fileName):
     BLOCKSIZE = 65536
     hasher = hashlib.sha1()
     with open(fileName, 'rb') as afile:
