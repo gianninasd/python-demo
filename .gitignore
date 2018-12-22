@@ -1,6 +1,9 @@
 .vscode
 *.log
 
+# working folders
+working
+
 # generated folders
 __pycache__
 

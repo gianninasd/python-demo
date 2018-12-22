@@ -1,7 +1,7 @@
 select
 *
 from
-fileproc.file_uploads;
+fileproc.file_uploads order by modification_date desc;
 
 select count(id) from fileproc.file_uploads where filehash = '86909456ab1e6ef17cf7aa5af27a3962b7c32df4z' and creation_date >= NOW() - INTERVAL 1 DAY;
 

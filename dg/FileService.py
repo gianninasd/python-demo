@@ -35,8 +35,8 @@ class FileService:
 
   # creates a file record in the DB
   # raises DupeFileException if file was previously uploaded in the last 24 hrs
-  def create(self, fileName):
-    fileHash = self._calculateHash(fileName)
+  def create(self, workingDir, fileName):
+    fileHash = self._calculateHash(workingDir, fileName)
     cnt = self.fileDAO.countInLast24hrs(fileHash)
 
     fileId = self.fileDAO.create(fileName, fileHash)
@@ -55,10 +55,10 @@ class FileService:
     self.recordDAO.createInitial(fileId, token)
 
   # generates the hash value of the file contents
-  def _calculateHash(self, fileName):
+  def _calculateHash(self, workingDir, fileName):
     BLOCKSIZE = 65536
     hasher = hashlib.sha1()
-    with open(fileName, 'rb') as afile:
+    with open(workingDir + '/' + fileName, 'rb') as afile:
       buf = afile.read(BLOCKSIZE)
       while len(buf) > 0:
         hasher.update(buf)
