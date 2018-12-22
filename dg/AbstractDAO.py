@@ -16,10 +16,14 @@ class AbstractDAO:
   # either executes an INSERT or UPDATE database operation 
   # using the SQL statement and data provided
   def execute(self, sqlStmt, data):
+    id = 0
     try:
       cn = self.getConn()
       cursor = cn.cursor()
       cursor.execute(sqlStmt, data)
       cn.commit()
+      id = cursor.lastrowid
     finally:
       cn.close() # returns connection to the pool
+
+    return id
