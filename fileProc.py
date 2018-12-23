@@ -17,15 +17,6 @@ import os
 import logging
 import logging.config
 
-# define custom exception
-class InvalidArguments(Exception):
-  pass
-
-# validates that the command line has the neccesary arguments
-def validateCommandLine(args):
-  if len(args) != 2:
-    raise InvalidArguments()
-
 # decrypts the raw record data for processing
 def decryptRec(secretKey, record):
   fernet = Fernet(secretKey)
