@@ -34,6 +34,7 @@ try:
           fileName = service.extractFileName(fullFileName)
           fileId = service.create(workingDir, fullFileName)
           logging.info('Processing [' + fullFileName + '] records with file id ' + str(fileId))
+          cnt = 0
 
           # open file and loop for each line
           with open(workingDir + '/' + fullFileName,'rt') as srcFile:
