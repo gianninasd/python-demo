@@ -1,6 +1,6 @@
 Python-demo
 ================
-A Python program that reads a CSV file and for each record, calls a REST API that performs a card payment using pool threading for parallel processing.
+A Python program that reads a CSV file, stores each record in a database and then for each record, calls a REST API that performs a card payment using pool threading for parallel processing.
 
 ## Pre-requisites
 * Install and run MySQL 5.5 or higher
@@ -14,14 +14,14 @@ All downloaded 3rd party libraries can be found in `<python install dir>\Lib\sit
 ## Setup database
 Run `db/fileproc.sql` to create the database tables within MySQL
 
-## Getting started
+## Running applications
 There two seperate applications you need to launch, the Loader and the Processor, first get the code:
-* `git clone https://github.com/gianninasd/python-demo`
+* `git clone https://github.com/gianninasd/python-demo.git`
 * `cd python-demo`
 
 Now follow these steps to launch both applications:
 * Open a console and run `python fileLoader.py` ... it will monitor for csv files in the `working` sub-folder
-* Open a second console and run `python fileProc.py`
+* Open a second console and run `python fileProc.py` ... it will monitor the database for records in INITIAL status
 
 You will see processing output on your consoles and in a file called `fileProc.log`
 
