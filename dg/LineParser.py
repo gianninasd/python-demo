@@ -13,8 +13,8 @@ class LineParser:
   # parses a comma seperated string into each field
   # expected line format is
   # <merc ref>,<amount>,<card>,<expiry month>,<expiry year>,<first name>,<last name>,<email>,<postal code>
-  def parse(self, line):
-    req = CardRequest()
+  def parse(self, recordId, line):
+    req = CardRequest(recordId)
     tokens = str(line).strip().split(',')
 
     if len(tokens) < 9:

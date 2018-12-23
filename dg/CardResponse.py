@@ -1,5 +1,6 @@
 # Holds data for card response
 class CardResponse:
+  recordId = 0
   guid = ''
   decision = ''
   ref = ''
@@ -10,7 +11,8 @@ class CardResponse:
   modificationDate = ''
 
   # constructor
-  def __init__(self, decision, guid):
+  def __init__(self, recordId, decision, guid):
+    self.recordId = recordId
     self.decision = decision
     self.guid = guid
 

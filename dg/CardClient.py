@@ -47,18 +47,18 @@ class CardClient:
     # process response
     if resp.status_code == 200:
       obj = resp.json()
-      result = CardResponse('SUCCESS', cardRequest.ref)
+      result = CardResponse(cardRequest.recordId, 'SUCCESS', cardRequest.ref)
       result.txnId = str(obj['id'])
       result.ref = str(obj['merchantRefNum'])
       result.status = str(obj['status'])
     elif resp.status_code >= 400 or resp.status_code < 500:
-      result = CardResponse('FAILED', cardRequest.ref)
+      result = CardResponse(cardRequest.recordId, 'FAILED', cardRequest.ref)
       result.txnId = str(resp.json()['id'])
       result.ref = str(resp.json()['merchantRefNum'])
       errorObj = resp.json()['error']
       result.errorCode = errorObj['code']
       result.message = errorObj['message']
     elif resp.status_code == 500:
-      result = CardResponse('ERROR', cardRequest.ref)
+      result = CardResponse(cardRequest.recordId, 'ERROR', cardRequest.ref)
 
     return result

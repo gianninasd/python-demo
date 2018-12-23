@@ -1,5 +1,6 @@
 # Holds data for card request
 class CardRequest:
+  recordId = 0
   guid = ''
   ref = ''
   amount = ''
@@ -10,6 +11,10 @@ class CardRequest:
   firstName = ''
   lastName = ''
   email = ''
+
+  # constructor
+  def __init__(self, recordId):
+    self.recordId = recordId
 
   def toString(self):
     return 'ref=' + str(self.ref) + \
